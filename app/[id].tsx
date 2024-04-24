@@ -1,12 +1,16 @@
 import { fetchMovie } from '@/api/movies';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { addMovieToWatchList } from '@/api/watchlist';
+import { FontAwesome } from '@expo/vector-icons';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { View, Text, ActivityIndicator, Image } from 'react-native';
+import { View, Text, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
 
 function MoviesDetails() {
 
     const { id } = useLocalSearchParams()
+
+    const client = useQueryClient();
 
     const {
         data: movie,
@@ -15,6 +19,10 @@ function MoviesDetails() {
     } = useQuery({
         queryKey: ['movies', id],
         queryFn: () => fetchMovie(Number(id)),
+    });
+
+    const { mutate } = useMutation({
+        mutationFn: () => addMovieToWatchList(id)
     });
 
     console.log(id)
@@ -41,13 +49,13 @@ function MoviesDetails() {
                     {movie.title}
                 </Text>
                 <View style={{ marginVertical: 10 }}>
-                    {/* <Pressable
-              onPress={() => mutate()}
-              style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
-            >
-              <FontAwesome name="bookmark-o" size={24} color="black" />
-              <Text>Add to watchlist</Text>
-            </Pressable> */}
+                    <TouchableOpacity
+                        onPress={() => mutate()}
+                        style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}
+                    >
+                        <FontAwesome name="bookmark-o" size={24} color="black" />
+                        <Text>Add to watchlist</Text>
+                    </TouchableOpacity>
                 </View>
                 <Text style={{ fontSize: 16 }}>{movie.overview}</Text>
             </View>
