@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
-
+import { Tabs } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
@@ -41,29 +39,24 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Movies',
-          tabBarIcon: ({ color }) => <TabBarIcon nameIcons="font-awesome" name="eye" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          title: 'Filmes',
+          tabBarIcon: ({ color }) => <TabBarIcon nameIcons="material-community-icons" name="movie-play" color={color} />
+
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="watchlist"
         options={{
-          title: 'Watchlist',
-          tabBarIcon: ({ color }) => <TabBarIcon nameIcons="material-community-icons" name="movie-play" color={color} />,
+          title: 'Assistir',
+          tabBarIcon: ({ color }) => <TabBarIcon nameIcons="material-community-icons" name="bookmark-outline" color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="favorite"
+        options={{
+          title: 'Favoritos',
+          tabBarIcon: ({ color }) => <TabBarIcon nameIcons="material-community-icons" name="heart-circle-outline" color={color} />,
         }}
       />
     </Tabs>

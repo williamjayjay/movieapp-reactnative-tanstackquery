@@ -1,10 +1,10 @@
 import { verifyEnvironment } from "./api";
 
-export const fetchTopRatedMovies = async () => {
+export const fetchTopRatedMovies = async ({ pageParam }: any) => {
 
     const { headers } = verifyEnvironment()
 
-    const url = process.env.EXPO_PUBLIC_MOVIES_URL + 'movie/top_rated?language=en-US&page=1'
+    const url = process.env.EXPO_PUBLIC_MOVIES_URL + `movie/top_rated?language=en-US&page=${pageParam}`
 
     const options: RequestInit = {
         method: 'GET',
