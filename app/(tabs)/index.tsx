@@ -2,32 +2,39 @@ import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
 import { Text, View } from '@/components/Themed';
 import { useEffect, useState } from 'react';
 import { fetchTopRatedMovies } from '@/api/movies';
+import { useQuery } from '@tanstack/react-query';
+import { MovieListItem } from '@/components/MovieListItem';
 
 export default function TabOneScreen() {
 
-  const [movies, setMovies] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['movies'],
+    queryFn: fetchTopRatedMovies
+  })
 
-  useEffect(() => {
+  // const [movies, setMovies] = useState([])
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [error, setError] = useState(null)
 
-    const fetchMovies = async () => {
-      setIsLoading(true)
+  // useEffect(() => {
 
-      try {
-        const movies = await fetchTopRatedMovies()
-        setMovies(movies)
+  //   const fetchMovies = async () => {
+  //     setIsLoading(true)
 
-      } catch (error) {
-        setError(error)
+  //     try {
+  //       const movies = await fetchTopRatedMovies()
+  //       setMovies(movies)
 
-      }
-      setIsLoading(false)
-    }
+  //     } catch (error) {
+  //       setError(error)
 
-    fetchMovies()
+  //     }
+  //     setIsLoading(false)
+  //   }
 
-  }, [])
+  //   fetchMovies()
+
+  // }, [])
 
 
   if (isLoading) {
@@ -44,14 +51,11 @@ export default function TabOneScreen() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={movies}
-        renderItem={({ item }) => (
-
-          <View>
-            <Text>{item.title}</Text>
-          </View>
-        )
-        }
+        data={data}
+        numColumns={2}
+        contentContainerStyle={{ gap: 5, padding: 5 }}
+        columnWrapperStyle={{ gap: 5 }}
+        renderItem={({ item, index }) => <MovieListItem key={index} movie={item} />}
       />
     </View>
   );
@@ -60,8 +64,6 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
