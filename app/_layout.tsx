@@ -28,7 +28,10 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
-  });
+    'MaterialCommunityIcons': require('@expo/vector-icons/build/vendor/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf'),
+  },
+
+  );
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
